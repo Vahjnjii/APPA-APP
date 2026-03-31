@@ -203,7 +203,7 @@ export default function VoiceAssistant({ jobs, transactions }: VoiceAssistantPro
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[100] flex flex-col items-end gap-3">
+    <div className="fixed bottom-24 right-6 z-[100] flex flex-col items-end gap-3">
       {/* Status Bubble */}
       <AnimatePresence>
         {(status || error) && (
@@ -241,12 +241,12 @@ export default function VoiceAssistant({ jobs, transactions }: VoiceAssistantPro
         onTouchEnd={handleMouseUp}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        className={`w-16 h-16 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 relative ${
+        className={`w-12 h-12 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 relative border border-orange-500/50 backdrop-blur-sm ${
           isRecording 
-            ? 'bg-red-500 text-white ring-8 ring-red-100' 
+            ? 'bg-red-500/90 text-white ring-8 ring-red-100' 
             : isProcessing 
-              ? 'bg-orange-500 text-white' 
-              : 'bg-stone-900 text-white hover:bg-black'
+              ? 'bg-orange-500/90 text-white' 
+              : 'bg-stone-900/80 text-white hover:bg-black'
         }`}
       >
         {isRecording && (
@@ -258,18 +258,11 @@ export default function VoiceAssistant({ jobs, transactions }: VoiceAssistantPro
           />
         )}
         {isProcessing ? (
-          <Loader2 className="w-8 h-8 animate-spin" />
+          <Loader2 className="w-6 h-6 animate-spin" />
         ) : (
-          <Mic className={`w-8 h-8 ${isRecording ? 'animate-pulse' : ''}`} />
+          <Mic className={`w-6 h-6 ${isRecording ? 'animate-pulse' : ''}`} />
         )}
       </motion.button>
-      
-      {/* Tooltip hint */}
-      {!isRecording && !isProcessing && !isSpeaking && !status && (
-        <span className="text-[10px] font-black uppercase tracking-widest text-stone-400 bg-white/80 px-2 py-1 rounded-full shadow-sm border border-stone-100">
-          Hold to ask
-        </span>
-      )}
     </div>
   );
 }

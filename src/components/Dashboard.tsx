@@ -760,6 +760,9 @@ export default function Dashboard() {
           onSyncEnd={() => setIsSyncing(false)}
         />
       )}
+
+      {/* Voice Assistant */}
+      <VoiceAssistant jobs={jobs} transactions={transactions} />
     </div>
   );
 }
