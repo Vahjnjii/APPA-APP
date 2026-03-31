@@ -1,0 +1,132 @@
+{
+  "entities": {
+    "Job": {
+      "title": "Job",
+      "description": "A daily job or task.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The UID of the user who created the job."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title or name of the job."
+        },
+        "description": {
+          "type": "string",
+          "description": "Optional details about the job."
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "The date of the job in YYYY-MM-DD format."
+        },
+        "startTime": {
+          "type": "string",
+          "description": "The start time of the job in HH:mm format."
+        },
+        "category": {
+          "type": "string",
+          "enum": ["job", "program", "reminder", "event"],
+          "description": "The category of the task (job, program, reminder, or event)."
+        },
+        "location": {
+          "type": "string",
+          "description": "The location of the job."
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["important", "less-important"],
+          "description": "The priority level of the task."
+        },
+        "hasEarning": {
+          "type": "boolean",
+          "description": "Whether this job has an earning associated with it."
+        },
+        "earningAmount": {
+          "type": "number",
+          "description": "The amount earned from this job. 0 if no earning."
+        },
+        "isCompleted": {
+          "type": "boolean",
+          "description": "Whether the job has been completed."
+        },
+        "createdAt": {
+          "type": "timestamp",
+          "description": "When the job was created."
+        }
+      },
+      "required": [
+        "userId",
+        "title",
+        "date",
+        "category",
+        "priority",
+        "hasEarning",
+        "earningAmount",
+        "isCompleted",
+        "createdAt"
+      ]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "A financial transaction (income or expense).",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The UID of the user who created the transaction."
+        },
+        "title": {
+          "type": "string",
+          "description": "The reason or name of the transaction."
+        },
+        "amount": {
+          "type": "number",
+          "description": "The amount of the transaction."
+        },
+        "type": {
+          "type": "string",
+          "enum": ["income", "expense"],
+          "description": "The type of transaction (income or expense)."
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "The date of the transaction in YYYY-MM-DD format."
+        },
+        "description": {
+          "type": "string",
+          "description": "Optional details about the transaction."
+        },
+        "createdAt": {
+          "type": "timestamp",
+          "description": "When the transaction was created."
+        }
+      },
+      "required": [
+        "userId",
+        "title",
+        "amount",
+        "type",
+        "date",
+        "createdAt"
+      ]
+    }
+  },
+  "firestore": {
+    "jobs/{jobId}": {
+      "schema": {
+        "$ref": "#/entities/Job"
+      },
+      "description": "Stores all jobs created by users."
+    },
+    "transactions/{transactionId}": {
+      "schema": {
+        "$ref": "#/entities/Transaction"
+      },
+      "description": "Stores all financial transactions created by users."
+    }
+  }
+}
