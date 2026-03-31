@@ -487,7 +487,6 @@ export default function Dashboard() {
                       <span className="w-1 h-1 rounded-full bg-red-600/30 mx-1"></span>
                       <span className="text-red-600 font-black">
                         {format(parse(upcomingReminders[reminderIndex].date, 'yyyy-MM-dd', new Date()), 'MMM dd')}
-                        {upcomingReminders[reminderIndex].startTime ? ` @ ${upcomingReminders[reminderIndex].startTime}` : ''}
                       </span>
                     </div>
                   </motion.div>

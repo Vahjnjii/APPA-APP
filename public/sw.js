@@ -1,9 +1,23 @@
-// Minimal service worker for PWA installability
+const CACHE_NAME = 'papa-tracker-v1';
+const ASSETS = [
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/sw.js'
+];
+
 self.addEventListener('install', (event) => {
-  console.log('Service Worker installing.');
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(ASSETS);
+    })
+  );
 });
 
 self.addEventListener('fetch', (event) => {
-  // Pass through all requests
-  event.respondWith(fetch(event.request));
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
+    })
+  );
 });
