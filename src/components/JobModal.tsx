@@ -46,9 +46,7 @@ export default function JobModal({
   const [timePeriod, setTimePeriod] = useState('AM');
   const [category, setCategory] = useState<JobCategory>('job');
   const [location, setLocation] = useState('');
-  const [hasEarning, setHasEarning] = useState(false);
   const [earningAmount, setEarningAmount] = useState('');
-  const [isCompleted, setIsCompleted] = useState(false);
   
   // Transaction fields
   const [transTitle, setTransTitle] = useState('');
@@ -89,9 +87,7 @@ export default function JobModal({
 
       setCategory(jobToEdit.category || 'job');
       setLocation(jobToEdit.location || '');
-      setHasEarning(jobToEdit.hasEarning);
       setEarningAmount(jobToEdit.earningAmount > 0 ? jobToEdit.earningAmount.toString() : '');
-      setIsCompleted(jobToEdit.isCompleted || false);
     } else if (transactionToEdit) {
       setMode('transaction');
       setTransTitle(transactionToEdit.title);
@@ -110,9 +106,7 @@ export default function JobModal({
       setTimePeriod('AM');
       setCategory('job');
       setLocation('');
-      setHasEarning(false);
       setEarningAmount('');
-      setIsCompleted(false);
       
       setTransTitle('');
       setTransAmount('');
@@ -183,7 +177,7 @@ export default function JobModal({
           priority: 'important',
           hasEarning: finalHasEarning,
           earningAmount: finalHasEarning ? parseFloat(earningAmount) : 0,
-          isCompleted,
+          isCompleted: false,
         };
 
         if (jobToEdit) {
@@ -428,31 +422,14 @@ export default function JobModal({
 
           {/* Earnings Section */}
           <div className="bg-stone-50 p-4 rounded-2xl border-2 border-stone-100 space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-green-100 text-green-600">
-                  <IndianRupee className="w-5 h-5" />
-                </div>
-                <div>
-                  <span className="font-bold text-stone-800 text-sm block">Earnings</span>
-                  <span className="text-[10px] text-stone-400 uppercase font-bold">Leave empty if none</span>
-                </div>
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-green-100 text-green-600">
+                <IndianRupee className="w-5 h-5" />
               </div>
-              
-              <button
-                type="button"
-                onClick={() => setIsCompleted(!isCompleted)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all border-2 ${
-                  isCompleted 
-                    ? 'bg-green-600 border-green-500 text-white shadow-lg shadow-green-200' 
-                    : 'bg-white border-stone-200 text-stone-400 hover:border-green-500 hover:text-green-600'
-                }`}
-              >
-                <CheckCircle2 size={16} />
-                <span className="text-[10px] font-black uppercase tracking-widest">
-                  {isCompleted ? 'Completed' : 'Mark Done'}
-                </span>
-              </button>
+              <div>
+                <span className="font-bold text-stone-800 text-sm block">Earnings</span>
+                <span className="text-[10px] text-stone-400 uppercase font-bold">Leave empty if none</span>
+              </div>
             </div>
 
             <div className="pt-1">
@@ -650,7 +627,7 @@ export default function JobModal({
             </span>
             <div className={`flex items-center gap-2 font-bold ${mode === 'task' || transType === 'income' ? 'text-green-700' : 'text-red-700'}`}>
               <IndianRupee className="w-4 h-4" />
-              {mode === 'task' ? (hasEarning ? earningAmount || '0' : '0') : transAmount || '0'}
+              {mode === 'task' ? (parseFloat(earningAmount) > 0 ? earningAmount : '0') : transAmount || '0'}
             </div>
           </div>
         </div>

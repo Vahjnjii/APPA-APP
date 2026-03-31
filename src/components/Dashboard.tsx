@@ -277,7 +277,6 @@ export default function Dashboard() {
   const actualBalance = totalJobEarnings + totalIncome - totalExpense;
 
   const isExpired = (job: Job) => {
-    if (job.isCompleted) return false;
     const now = new Date();
     const jobDate = parse(job.date, 'yyyy-MM-dd', new Date());
     if (isBefore(jobDate, startOfDay(now))) return true;
@@ -298,10 +297,10 @@ export default function Dashboard() {
         const jobDate = parse(job.date, 'yyyy-MM-dd', new Date());
         if (isAfter(jobDate, now)) return true;
         if (format(jobDate, 'yyyy-MM-dd') === format(now, 'yyyy-MM-dd')) {
-          if (!job.startTime) return !job.isCompleted;
+          if (!job.startTime) return true;
           const [h, m] = job.startTime.split(':').map(Number);
           const jobTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
-          return isAfter(jobTime, now) && !job.isCompleted;
+          return isAfter(jobTime, now);
         }
         return false;
       })
@@ -317,10 +316,10 @@ export default function Dashboard() {
     return sortedUpcoming.filter(item => item.date === firstDate);
   }, [jobs]);
 
-  // Find recent 10 jobs (completed or expired)
+  // Find recent 10 jobs (expired)
   const recentJobs = useMemo(() => {
     const sorted = [...jobs]
-      .filter(job => job.isCompleted || isExpired(job))
+      .filter(job => isExpired(job))
       .sort((a, b) => {
         if (a.date !== b.date) return b.date.localeCompare(a.date);
         return (b.startTime || '00:00').localeCompare(a.startTime || '00:00');
@@ -348,8 +347,7 @@ export default function Dashboard() {
       const jobDate = parse(job.date, 'yyyy-MM-dd', new Date());
       return job.category === 'reminder' && 
              (isAfter(jobDate, now) || isSameDay(jobDate, now)) &&
-             !isAfter(jobDate, sevenDaysLater) &&
-             !job.isCompleted;
+             !isAfter(jobDate, sevenDaysLater);
     }).sort((a, b) => a.date.localeCompare(b.date));
   }, [jobs]);
 
@@ -581,29 +579,19 @@ export default function Dashboard() {
                       </h3>
                       <div className="space-y-3">
                         {group.items.map((job) => {
-                          const expired = isExpired(job);
-                          const isDone = job.isCompleted || expired;
                           return (
                             <motion.div
                               key={job.id}
                               whileHover={{ scale: 1.01 }}
-                              className={`flex items-center justify-between p-3 sm:p-4 rounded-2xl border transition-all duration-300 ${
-                                isDone 
-                                  ? 'bg-green-50/20 border-green-100 shadow-sm shadow-green-100/50' 
-                                  : 'bg-white border-black/5 shadow-sm'
-                              }`}
+                              className="flex items-center justify-between p-3 sm:p-4 rounded-2xl border transition-all duration-300 bg-white border-black/5 shadow-sm"
                             >
                               <div className="flex items-center gap-3 sm:gap-5 flex-1 min-w-0">
-                                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shrink-0 ${
-                                  isDone ? 'bg-green-100 text-green-600' :
-                                  'bg-black/5 text-black/30'
-                                }`}>
-                                  {isDone ? <CheckCircle2 size={16} className="sm:w-5 sm:h-5" /> :
-                                   <Clock size={16} className="sm:w-5 sm:h-5" />}
+                                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center shrink-0 bg-black/5 text-black/30">
+                                  <Clock size={16} className="sm:w-5 sm:h-5" />
                                 </div>
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-2">
-                                    <h4 className={`text-sm sm:text-base font-bold tracking-tight leading-[1.2] break-words whitespace-pre-wrap ${isDone ? 'text-green-900/60 line-through' : 'text-black'}`}>
+                                    <h4 className="text-sm sm:text-base font-bold tracking-tight leading-[1.2] break-words whitespace-pre-wrap text-black">
                                       {job.title}
                                     </h4>
                                   </div>
@@ -616,7 +604,7 @@ export default function Dashboard() {
                               <div className="flex items-center gap-3 sm:gap-8 shrink-0 ml-3">
                                 {job.hasEarning && (
                                   <div className="text-right">
-                                    <p className={`text-sm sm:text-lg font-mono font-black tracking-tighter ${isDone ? 'text-green-700' : 'text-black'}`}>
+                                    <p className="text-sm sm:text-lg font-mono font-black tracking-tighter text-black">
                                       ₹{job.earningAmount.toLocaleString()}
                                     </p>
                                     <p className="text-[7px] sm:text-[9px] text-black/30 uppercase tracking-widest font-bold">Earnings</p>
