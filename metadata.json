@@ -1,5 +1,5 @@
 {
-  "name": "Job Tracker",
-  "description": "A simple, easy-to-use calendar and job tracker with earnings analytics.",
+  "name": "Papa's Tracker",
+  "description": "A simple and powerful job and transaction tracker for Papa.",
   "requestFramePermissions": []
 }

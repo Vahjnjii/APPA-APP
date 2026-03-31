@@ -11,7 +11,6 @@ import DailyJobs from './DailyJobs';
 import EarningsReport from './EarningsReport';
 import JobModal from './JobModal';
 import TransactionHistory from './TransactionHistory';
-import VoiceAssistant from './VoiceAssistant';
 
 export default function Dashboard() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -455,7 +454,7 @@ export default function Dashboard() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-4 pb-32">
+      <main className="flex-1 max-w-5xl mx-auto w-full px-2 sm:px-4 py-4 pb-32">
         {activeTab === 'calendar' ? (
           viewMode === 'home' ? (
             <div className="space-y-6 pb-24">
@@ -496,14 +495,12 @@ export default function Dashboard() {
               </AnimatePresence>
 
               {/* Calendar Section */}
-              <div className="bg-white rounded-[2.5rem] shadow-xl shadow-stone-200/50 p-6 border border-stone-100">
-                <CalendarView 
-                  selectedDate={selectedDate} 
-                  onSelectDate={handleCalendarSelect} 
-                  jobs={jobs}
-                  transactions={transactions}
-                />
-              </div>
+              <CalendarView 
+                selectedDate={selectedDate} 
+                onSelectDate={handleCalendarSelect} 
+                jobs={jobs}
+                transactions={transactions}
+              />
 
               {/* Next Schedule Section */}
               <div className="space-y-8">
@@ -760,9 +757,6 @@ export default function Dashboard() {
           onSyncEnd={() => setIsSyncing(false)}
         />
       )}
-
-      {/* Voice Assistant */}
-      <VoiceAssistant jobs={jobs} transactions={transactions} />
     </div>
   );
 }

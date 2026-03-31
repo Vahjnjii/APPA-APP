@@ -30,8 +30,8 @@ export default function CalendarView({ selectedDate, onSelectDate, jobs, transac
 
   const renderHeader = () => {
     return (
-      <div className="flex justify-between items-center mb-4">
-        <button onClick={prevMonth} className="p-2 rounded-full hover:bg-stone-100 text-stone-600 transition-colors">
+      <div className="flex justify-between items-center mb-2 sm:mb-4">
+        <button onClick={prevMonth} className="p-1 sm:p-2 rounded-full hover:bg-stone-100 text-stone-600 transition-colors">
           <ChevronLeft className="w-6 h-6" />
         </button>
         <h2 className="text-xl font-bold text-stone-800">
@@ -54,7 +54,7 @@ export default function CalendarView({ selectedDate, onSelectDate, jobs, transac
         </div>
       );
     }
-    return <div className="grid grid-cols-7 mb-2">{days}</div>;
+    return <div className="grid grid-cols-7 mb-1 sm:mb-2">{days}</div>;
   };
 
   const renderCells = () => {
@@ -126,8 +126,8 @@ export default function CalendarView({ selectedDate, onSelectDate, jobs, transac
             onClick={() => onSelectDate(cloneDay, hasJobs || hasTransactions)}
             style={customStyle}
             className={`
-              relative flex flex-col items-center justify-center p-1 sm:p-2 h-14 sm:h-20 w-full
-              rounded-xl sm:rounded-2xl transition-all outline-none
+              relative flex flex-col items-center justify-center p-0.5 sm:p-2 h-12 sm:h-20 w-full
+              rounded-lg sm:rounded-2xl transition-all outline-none
               ${!isSameMonth(day, monthStart) ? 'text-stone-300 opacity-40' : dayColorClass}
               ${!isSelected ? 'hover:bg-stone-50 hover:shadow-[inset_0_0_0_1px_#e5e7eb]' : ''}
             `}
@@ -160,14 +160,14 @@ export default function CalendarView({ selectedDate, onSelectDate, jobs, transac
   };
 
   return (
-    <div className="bg-white p-4 sm:p-6 rounded-[2rem] shadow-xl shadow-stone-200/50 border border-stone-100">
+    <div className="bg-white p-2 sm:p-6 rounded-[2rem] shadow-xl shadow-stone-200/50 border border-stone-100">
       {renderHeader()}
-      <div className="bg-stone-50/50 rounded-3xl p-2 sm:p-4 border border-stone-100">
+      <div className="p-1 sm:p-4">
         {renderDays()}
         {renderCells()}
       </div>
       
-      <div className="mt-6 flex flex-wrap justify-center gap-4 text-[9px] font-bold uppercase tracking-widest text-stone-400">
+      <div className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2 text-[9px] font-bold uppercase tracking-widest text-stone-400">
         <div className="flex items-center gap-1.5">
           <div className="h-1.5 w-3 rounded-full bg-stone-900 shadow-sm"></div>
           <span>Jobs</span>
